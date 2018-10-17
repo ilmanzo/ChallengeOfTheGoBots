@@ -1,0 +1,344 @@
+go GoBots!
+
+chatbot in Go, la vita, l'universo e tutto quanto
+
+17 ottobre 2018
+
+Andrea Manzini 
+
+🐞 Backenders User Group VR
+
+🌐 [[http://ilmanzo.github.io]]
+
+📧 ilmanzo@gmail.com
+
+@ilmanzo
+
+
+* $ whois ilmanzo
+
+- sistemista Linux/Unix con oltre 25 anni di esperienza
+- certificazioni RHCE, RHCSA Openstack, RHCVA, Ansible, Suse SCA/SCE, Openstack foundation
+- moderatore comunita' Python [[http://www.python-it.org]]
+- Opensource contributor (mozilla project, exercism.io)
+- autore di articoli tecnici (Linux&C, LinuxPro, GuruAdvisor)
+- ulteriori informazioni sul mio sito web [[http://ilmanzo.github.io]]
+- linkedin, @ilmanzo su twitter e github
+
+this presentation is made with present [[https://godoc.org/golang.org/x/tools/cmd/present]]
+
+* DISCLAIMER
+
+sorry, no AI (not today)
+
+.image gobots_pic/Challenge-of-the-GoBots-Episode-30-Renegade-Rampage-Pt-1.jpg
+
+* "Transformers ??"
+
+.image img/ShootingStarGoBotsAd.jpg _ 370
+
+
+* but good enough
+
+.image gobots_pic/gobots---gb-27-scooter-p-image-269917-grande.jpg _ 400
+
+
+
+
+* Scrivere un bot
+
+- perché ? 
+- come ?
+- dove ?
+- performance & monitoring
+- tricks and tips
+
+* Qualche idea
+
+- monitoraggio di server e/o servizi
+- notifiche CI 
+- reminders, news
+- internet of things e domotica
+- per sostituire una "app" dedicata (take away, prenotazioni, erogazione informazioni)
+- interfaccia text-based a cui l'utente è già abituato
+
+* Perché in Go ?
+
+- imparare qualcosa di nuovo
+- ottime librerie disponibili
+- tempi di compilazione trascurabili
+- facilità di deploy
+- performance: è codice nativo
+- linguaggio typesafe
+- concorrenza e parallellismo FACILI 
+- supporto per servizi cloud (GAE/GCE; serverless functions)
+- ecosistema e comunità
+
+* What is Go?
+
+(... baby don't hurt me...)
+
+Go is a new, general-purpose programming language.
+
+- Compiled
+- Statically typed
+- Concurrent
+- Simple
+- Productive
+
+"Go is a wise, clean, insightful, fresh thinking approach to the greatest-hits subset of the well understood."
+- Michael T. Jones
+
+
+* History
+
+- Project starts at Google in 2007 (by Griesemer, Pike, Thompson)
+- Open source release in November 2009
+- More than 250 contributors join the project
+- Version 1.0 release in March 2012
+
+# Go was originally built by a team at Google, led by Robert Griesemer, Rob Pike, and Ken Thompson. In November 2010, Go was launched publically as an open source project. Since then, a team at Google and more than 250 contributors from the open source community continued to improve the Go language, libraries, and tools.
+
+# In March 2012, we announced Go 1, a version of the language and libraries that will be supported for years to come. 
+
+2015: SBAMMM
+.image img/cspr1.jpg _ 600
+
+* @rob_pike
+
+.image img/quote-there-s-nothing-in-computing-that-can-t-be-broken-by-another-level-of-indirection-rob-pike-98-85-16.jpg 
+
+* Kernighan, Pike
+
+.image img/The-Unix-Programming-Environment-BWKernighan-RPike.jpg _ 600
+
+* Thompson, Pike
+
+.image img/utf8.png
+
+Ken Thompson:
+
+- Multics/Unix , ed
+- Plan9
+- Premio turing nel 1983
+- National Medal of Technology nel 1998
+- Asteroide 300909 Kenthompson
+
+
+* Getting started
+
+* Install Go
+
+.link http://golang.org/doc/install
+
+- Install from binary distributions or build from source
+- 32- and 64-bit x86 and ARM processors
+- Windows, Mac OS X, Linux, and FreeBSD
+
+- cross-compilazione
+  #compila per raspberry PI:
+  $ GOOS=linux GOARCH=arm GOARM=5 go build hello.go
+
+  #compila per windows:
+  $ GOOS=windows GOARCH=386 go build -o hello.exe hello.go
+
+
+* Telegram
+
+- piattaforma "open" e gratuita
+- facile da usare
+- client disponibili per tutti i device
+- integrazione con il dispositivo (nr.cell, posizione GPS)
+- [[https://telegram.org/blog/payments][payments]], gaming...
+
+
+alternative: slack / facebook messenger / discord ...
+payment providers: [[https://s3-eu-west-1.amazonaws.com/docs.online.satispay.com/index.html]]
+
+
+* Telegram bot API
+
+- Bots have no online status and no last seen timestamps, the interface shows the label ‘bot’ instead.
+- Bots have limited cloud storage — older messages may be removed by the server shortly after they have been processed.
+- Bots can't initiate conversations with users. A user must either add them to a group or send them a message first. People can use telegram.me/<bot_username> links or username search to find your bot.
+- Bot usernames always end in ‘bot’ (e.g. @TriviaBot, @GitHub_bot).
+- When added to a group, bots do not receive all messages by default (see Privacy mode).
+- Bots never eat, sleep or complain (unless expressly programmed otherwise).
+
+[[https://core.telegram.org/bots]]
+
+* Telegram bot API
+
+.image img/botfather.png _ 500
+
+ 
+
+* Telebot
+
+[[https://github.com/tucnak/telebot]]
+
+ "I never knew creating Telegram bots could be so sexy!"
+
+evvai ho trovato la libreria che mi serve! ➡️ git clone
+
+
+.image img/Docker_Golang_Iron-300x209.jpg _ 400
+
+let's [[https://golang.org/cmd/go/#hdr-Vendor_Directories][vendor]] all the things! 🙆
+
+* (some weeks later)
+
+we uaglio' bello sto github ma... Come funzia la gestione dei pacchetti ?
+
+ go get -u gopkg.in/tucnak/telebot.v2
+
+"v2" ? Ho iniziato a sviluppare tutto con la v1 😓
+
+.link manzobot_v1/telemanzobot_v1.go
+
+ *first lesson: API changes*
+
+ *second lesson: semantic versioning is a thing*
+
+* la v2 
+
+
+.image img/v2-4.jpg
+
+ type Sendable interface {
+     Send(*Bot, Recipient, *SendOptions) (*Message, error)
+ }
+
+.link manzobot_v2/telemanzobot_v2.go 
+
+also see: [[http://thecatapi.com/]]
+
+
+* Do && Don'ts 
+
+
+- protect your API keys
+
+  don't deviate from standard, idiomatic patterns: 
+  
+- error last value returned, should be propagated to upper layers
+- NewSomething() returns pointer to type, MakeSomething() returns type
+- [[https://nathanleclaire.com/blog/2014/08/09/dont-get-bitten-by-pointer-vs-non-pointer-method-receivers-in-golang/][Don't mix]] pointers and non-pointers method receivers 
+
+
+* Do && Don'ts 
+
+- don't panic()
+if you need a stack trace,  use the pkg/errors module to wrap errors.
+
+  _, err := ioutil.ReadAll(r)
+  if err != nil {
+        return errors.Wrap(err, "read failed")
+  }
+
+
+<< DEMO >>
+
+.image img/demo_bucket.png
+
+* Do && Don'ts 
+
+LOG & monitor
+
+- log all the things! But dont't log.Printf()
+- logger:=log.New() , with line numbers; dependency injection (pass around logger) 
+- give a look to [[https://github.com/sirupsen/logrus][logrus]] 👉 
+- [[https://github.com/uber-go/zap][Zap]] Uber’s logging library, is a better alternative to Logrus and the default Go logging system.
+- monitor your service and performance
+
+* Do && Don'ts 
+
+Think about deploy in production
+
+- blacklist, whitelist, killswitch (no pun intended)
+- performance optimizations can wait, but not forever 
+
+- Packaging: [[https://github.com/GeertJohan/go.rice][Go.Rice]] enables you to easily embed static files such as templates into your Go binary. 
+
+- if running in a docker container remove dependency from stdlib (dns resolver), and get a pure Go binary
+
+ CGO_ENABLED=0 go build myprog.go -o myprog
+
+* a trip into testing and performance
+
+.link demo_profile
+
+ #run tests
+ go test .
+ #run benchmarks
+ go test -bench=.
+ #run benchmarks and store pprof profile data
+ go test -cpuprofile cpu.prof -memprofile mem.prof -bench=.
+
+.image img/demo2_obiwan.jpg
+
+
+* a trip into testing and performance
+
+if you don't like benchmarks, you can generate performance profile data via code:
+
+ var cpuprofile = flag.String("cpuprofile", "", "write cpu profile to file")
+ func main() {
+    flag.Parse()
+    if *cpuprofile != "" {
+        f, err := os.Create(*cpuprofile)
+        if err != nil {
+            log.Fatal(err)
+        }
+        pprof.StartCPUProfile(f)
+        defer pprof.StopCPUProfile()
+    }
+  // go tool pprof cpu.prof
+
+
+
+
+* bonus: novità in Go 1.11
+
+Venerdì 24 agosto:  [[https://blog.golang.org/go1.11]]  
+
+.image img/wa.jpg _ 350
+
+[[https://medium.zenika.com/go-1-11-webassembly-for-the-gophers-ae4bb8b1ee03]]
+
+[[https://medium.com/@sendilkumarn/getting-started-into-go-and-webassembly-8491b133a616]]
+
+ $ GOARCH=wasm GOOS=js go build -o test.wasm main.go
+
+[[https://github.com/golang/go/wiki/WebAssembly]]
+
+* bonus: novità in Go 1.11
+
+.image img/package_mgr.png _ 350
+[[https://github.com/golang/go/wiki/Modules]]
+
+[[https://talks.godoc.org/github.com/rogpeppe/talks/modules.talk/modules.slide#1]]
+
+
+* MUCH faster code (credits: @davecheney)
+
+.link go1.0-vs-go1.11.txt 
+
+
+A brand new logo ...
+
+.image img/Go-Logo_Aqua.png _ 400
+
+[[https://blog.golang.org/go-brand]]
+
+
+
+
+
+* ... e molto altro
+
+[[https://talks.godoc.org/github.com/mvdan/talks/2018/go1.11.slide#1]]
+
+
+.image img/gopher_saluta.gif
+
