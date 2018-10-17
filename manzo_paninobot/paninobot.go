@@ -58,10 +58,10 @@ func checkUser(userid int) {
 func menuHandler(q *tb.Query) {
 	//TODO: get menu json from a webservice
 	menu := tb.Results{
-		&tb.ArticleResult{Title: "🍔 hamburgher", Text: "hamburger gustoso a soli 4€", HideURL: true},
-		&tb.ArticleResult{Title: "🍕 pizza", Text: "trancio di margherita 3€", HideURL: true},
-		&tb.ArticleResult{Title: "🍟 patatine", Text: "patatine, offerta solo 2€", HideURL: true},
-		&tb.ArticleResult{Title: "🍰 torta", Text: "cheesecake al cioccolato! 3.50 €", HideURL: true},
+		&tb.ArticleResult{Title: "🍔 hamburgher", Text: "Panino ? hamburger gustoso a soli 4 €", HideURL: true},
+		&tb.ArticleResult{Title: "🍕 pizza", Text: "Pizza ? Trancio di margherita 3 €", HideURL: true},
+		&tb.ArticleResult{Title: "🍟 patatine", Text: "Patatine ? Calde e croccanti, offerta solo 2.50 €", HideURL: true},
+		&tb.ArticleResult{Title: "🍰 torta", Text: "Dolce ? Cheesecake al cioccolato! 3.50 €", HideURL: true},
 	}
 
 	for i := range menu {

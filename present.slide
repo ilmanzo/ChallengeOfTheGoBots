@@ -214,6 +214,13 @@ we uaglio' bello sto github ma... Come funzia la gestione dei pacchetti ?
 also see: [[http://thecatapi.com/]]
 
 
+* un esempio più evoluto
+
+.image img/food-delivery-ft-evidenza-2.jpg
+
+PANINOBOT!
+
+
 * Do && Don'ts 
 
 
@@ -250,6 +257,9 @@ LOG & monitor
 - give a look to [[https://github.com/sirupsen/logrus][logrus]] 👉 
 - [[https://github.com/uber-go/zap][Zap]] Uber’s logging library, is a better alternative to Logrus and the default Go logging system.
 - monitor your service and performance
+
+
+.link demo_errors
 
 * Do && Don'ts 
 
