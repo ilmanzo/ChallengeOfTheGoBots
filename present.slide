@@ -244,7 +244,7 @@ if you need a stack trace,  use the pkg/errors module to wrap errors.
   }
 
 
-<< DEMO >>
+.link demo_errors << DEMO >>
 
 .image img/demo_bucket.png
 
@@ -258,8 +258,6 @@ LOG & monitor
 - [[https://github.com/uber-go/zap][Zap]] Uber’s logging library, is a better alternative to Logrus and the default Go logging system.
 - monitor your service and performance
 
-
-.link demo_errors
 
 * Do && Don'ts 
 
