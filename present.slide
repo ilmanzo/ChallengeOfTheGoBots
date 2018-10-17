@@ -270,7 +270,7 @@ Think about deploy in production
 
 - if running in a docker container remove dependency from stdlib (dns resolver), and get a pure Go binary
 
- CGO_ENABLED=0 go build myprog.go -o myprog
+  $ CGO_ENABLED=0 go build -o myprog
 
 * a trip into testing and performance
 
